@@ -1,0 +1,70 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Setup AutoNetwork range for IPs
+#AutoNetwork.default_pool = '172.16.0.0/12'
+
+Vagrant.configure('2') do |config|
+  config.vm.box                      = 'centos'
+  config.pe_build.download_root      = 'https://s3.amazonaws.com/pe-builds/released'
+  config.pe_build.version            = '3.0.0'
+  config.pe_build.filename           = 'puppet-enterprise-3.0.0-all.tar.gz'
+  # This is SUPPOSED to fix the Puppet manifests issue (but doesn't...shhh)
+  config.pe_build.relocate_manifests = 'false'
+
+  # Define multiple VMs
+  config.vm.define 'master' do |node|
+    node.vm.network :private_network, ip: '192.168.50.4'
+    node.vm.network :forwarded_port, guest: 443, host: 1443
+    node.vm.network :forwarded_port, guest: 8080, host: 8080
+    node.vm.hostname = 'master'
+    node.vm.provision :hosts
+    node.vm.synced_folder "manifests/", "/manifests"
+
+    # Tweak VBox
+    node.vm.provider :virtualbox do |vbox|
+      vbox.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/vagrant", "1"]
+      vbox.customize ["modifyvm", :id, "--memory", "1024"]
+    end
+
+    # Setup PE
+    node.vm.provision :pe_bootstrap do |provisioner|
+      provisioner.answer_file = 'master.3.txt'
+      provisioner.role = :master
+    end
+  end
+
+  # Define Master 2
+  config.vm.define 'master2' do |node|
+    node.vm.network :private_network, ip: '192.168.50.5'
+    node.vm.network :forwarded_port, guest: 443, host: 1444
+    node.vm.network :forwarded_port, guest: 8080, host: 8081
+    node.vm.hostname = 'master'
+    node.vm.provision :hosts
+    node.vm.synced_folder "manifests/", "/manifests"
+
+    # Tweak VBox
+    node.vm.provider :virtualbox do |vbox|
+      vbox.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/vagrant", "1"]
+      vbox.customize ["modifyvm", :id, "--memory", "1024"]
+    end
+
+    # Setup PE
+    node.vm.provision :pe_bootstrap do |provisioner|
+      provisioner.answer_file = 'master.3.txt'
+      provisioner.role = :master
+    end
+  end
+
+  #config.vm.define 'agent1' do |node|
+  #  node.vm.network :private_network, ip: '192.168.50.6'
+  #  node.vm.hostname = 'agent'
+  #  node.vm.provision :hosts
+
+  #  # Setup PE
+  #  node.vm.provision :pe_bootstrap do |provisioner|
+  #    provisioner.answer_file = 'agent.3.txt'
+  #    provisioner.role = :agent
+  #  end
+  #end
+end
