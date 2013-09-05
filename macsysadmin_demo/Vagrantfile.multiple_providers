@@ -12,6 +12,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Fusion Configuration Settings
   config.vm.provider :vmware_fusion do |v, override|
     override.vm.box            = 'centos-vmware'
+    override.vm.box_url        = 'http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-fusion503-nocm.box'
     v.vmx['memsize']           = '1024'
   end
 
