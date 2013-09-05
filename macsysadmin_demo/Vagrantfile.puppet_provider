@@ -1,0 +1,29 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box      = 'centos'
+  config.vm.box_url  = 'http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box'
+  config.vm.hostname = 'virtualbox.puppetlabs.lan'
+  config.vm.network :private_network, ip: '192.168.13.3'
+
+  # Forward port 80 on the guest to port 8001 on the host
+  config.vm.network :forwarded_port, guest: 80, host: 8001
+
+  # Use the Shell Provisioner to INSTALL Puppet
+  config.vm.provision :shell, :path => "scripts/centos_6_x.sh"
+
+  # Use the Puppet Provisioner
+  config.vm.provision :puppet do |puppet|
+    puppet.module_path    = "modules"
+    puppet.manifests_path = "manifests"
+    puppet.manifest_file  = "site.pp"
+  end
+
+  config.vm.provider :virtualbox do |v|
+    v.customize ['modifyvm', :id, '--memory', '512']
+  end
+end
