@@ -1,0 +1,40 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.hostmanager.enabled = true
+  config.vm.box              = 'centos'
+  config.vm.box_url          = 'http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box'
+
+  # Fusion Configuration Settings
+  config.vm.provider :vmware_fusion do |v, override|
+    override.vm.box            = 'centos-vmware'
+    v.vmx['memsize']           = '1024'
+  end
+
+  # Virtualbox Configuration Settings
+  config.vm.provider :virtualbox do |v, override|
+    v.customize ['modifyvm', :id, '--memory', '512']
+  end
+
+  # Definition for the 'vmware.puppetlabs.lan' node
+  config.vm.define :vmware do |node|
+    node.vm.network :private_network, ip: '33.33.33.3'
+    node.vm.hostname = 'vmware.puppetlabs.lan'
+  end
+
+  # Definition for the 'virtualbox.puppetlabs.lan' node
+  config.vm.define :virtualbox do |node|
+    node.vm.network :private_network, ip: '192.168.13.3', mac: '00:11:22:33:44:55'
+    node.vm.hostname = 'virtualbox.puppetlabs.lan'
+  end
+
+  # Definition for the 'virtualbox2.puppetlabs.lan' node
+  config.vm.define :virtualbox2 do |node|
+    node.vm.network :private_network, ip: '192.168.13.4', mac: '55:44:33:22:11:00'
+    node.vm.hostname = 'virtualbox2.puppetlabs.lan'
+  end
+end

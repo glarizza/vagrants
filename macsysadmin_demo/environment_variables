@@ -1,0 +1,19 @@
+# Uncomment necessary lines and source this file to set Environment Variables
+
+# Set the default Vagrantfile filename
+# VAGRANT_VAGRANTFILE=Vagrantfile
+
+# Set the default provider to use
+# VAGRANT_DEFAULT_PROVIDER=virtualbox
+
+# Set logging level, one of: debug, info, warn, error
+# VAGRANT_LOG=debug
+
+# Start Vagrant without plugins - for debugging
+# VAGRANT_NO_PLUGINS=true
+
+# Set the path to the current working directory; where Vagrant looks for the Vagrantfile
+# VAGRANT_CWD='/var/tmp'
+
+# Set the path to where Vagrant stores its global data - or ~/.vagrant.d by default
+# VAGRANT_HOME="~/.vagrant.d"
