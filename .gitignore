@@ -1,0 +1,4 @@
+**/.vagrant/
+**/.pe_build/
+**/pe_build/
+**/*.swp
