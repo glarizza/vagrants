@@ -9,6 +9,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box              = 'centos'
   config.vm.box_url          = 'http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box'
 
+  # If you use VAGRANT_VAGRANTFILE, there seems to be a bug in the load path
+  # for Vagrantfiles where it doesn't get this configuration item that's
+  # set in the Centos box's Vagrantfile. Because of that, you can set it
+  # here - OR just rename your Vagrantfile to Vagrantfile and it works.
+  #config.vm.base_mac = "080027B1589A"
+
   # Fusion Configuration Settings
   config.vm.provider :vmware_fusion do |v, override|
     override.vm.box            = 'centos-vmware'
