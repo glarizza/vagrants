@@ -5,7 +5,6 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.hostmanager.enabled = true
   config.vm.box              = 'centos'
   config.vm.box_url          = 'http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box'
 
@@ -14,6 +13,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # set in the Centos box's Vagrantfile. Because of that, you can set it
   # here - OR just rename your Vagrantfile to Vagrantfile and it works.
   #config.vm.base_mac = "080027B1589A"
+
+  # Comment this out if you don't want automatic /etc/hosts updates
+  # To use this feature, install the hostmanager plugin with:
+  #   `vagrant plugin install vagrant-hostmanager`
+  config.hostmanager.enabled = true
 
   # Fusion Configuration Settings
   config.vm.provider :vmware_fusion do |v, override|
