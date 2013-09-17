@@ -38,13 +38,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Definition for the 'virtualbox.puppetlabs.lan' node
   config.vm.define :virtualbox do |node|
-    node.vm.network :private_network, ip: '192.168.13.3', mac: '00:11:22:33:44:55'
+    node.vm.network :private_network, ip: '192.168.13.3'
     node.vm.hostname = 'virtualbox.puppetlabs.lan'
   end
 
   # Definition for the 'virtualbox2.puppetlabs.lan' node
   config.vm.define :virtualbox2 do |node|
-    node.vm.network :private_network, ip: '192.168.13.4', mac: '55:44:33:22:11:00'
+    node.vm.network :private_network, ip: '192.168.13.4'
     node.vm.hostname = 'virtualbox2.puppetlabs.lan'
   end
 end
