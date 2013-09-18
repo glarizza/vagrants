@@ -10,8 +10,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.hostname = 'virtualbox.puppetlabs.lan'
   config.vm.network :private_network, ip: '192.168.13.3'
 
-  # Forward port 80 on the guest to port 8001 on the host
+  # Forward port 80 on the guest to port 8001 on the host (Wordpress)
+  # Forward port 8080 on the guest to port 8080 on the host (Jenkins)
   config.vm.network :forwarded_port, guest: 80, host: 8001
+  config.vm.network :forwarded_port, guest: 8080, host: 8080
 
   # Use the Shell Provisioner to INSTALL Puppet
   config.vm.provision :shell, :path => "scripts/centos_6_x.sh"
